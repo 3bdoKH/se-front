@@ -20,55 +20,68 @@ const Login = () => {
       await login(email, password);
       navigate('/');
     } catch (error) {
-      setError(error.response?.data?.message || 'Login failed. Please try again.');
+      setError(error.response?.data?.message || 'Invalid credentials. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-page">
-      <div className="login-container">
-        <div className="login-header">
+    <div className="auth-page">
+      <div className="auth-card">
+        <div className="auth-header">
+          <div className="brand-icon">L</div>
           <h1>Welcome Back</h1>
-          <p>Login to your account</p>
+          <p>Sign in to access your account</p>
         </div>
 
-        {error && <div className="error-message">{error}</div>}
+        {error && <div className="auth-error">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
+        <form onSubmit={handleSubmit} className="auth-form">
+
+          <div className="input-group">
+            <label htmlFor="email">Email Address</label>
+            <div className="input-wrapper">
+              <span className="input-icon">✉️</span>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@example.com"
+                required
+                className="auth-input"
+              />
+            </div>
           </div>
 
-          <div className="form-group">
+          <div className="input-group">
             <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
+            <div className="input-wrapper">
+              <span className="input-icon">🔒</span>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                required
+                className="auth-input"
+              />
+            </div>
+            <div className="forgot-password">
+              <Link to="/forgot-password">Forgot password?</Link>
+            </div>
           </div>
 
-          <button type="submit" className="login-btn" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+          <button type="submit" className="auth-btn" disabled={loading}>
+            {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
-        <div className="login-footer">
+        <div className="auth-footer">
           <p>
-            Don't have an account? <Link to="/register">Register here</Link>
+            New to Luxe? <Link to="/register">Create an account</Link>
           </p>
         </div>
       </div>
@@ -77,4 +90,3 @@ const Login = () => {
 };
 
 export default Login;
-
