@@ -80,13 +80,13 @@ const Products = () => {
     <div className="products-page">
       {/* Hero Section */}
       <div className="products-hero">
-        <div className="container">
+        <div className="products-container">
           <h1 className="page-title">The Collection</h1>
           <p className="page-subtitle">Timeless essentials for everyday living.</p>
         </div>
       </div>
 
-      <div className="container products-layout">
+      <div className="products-container products-layout">
 
         {/* MOBILE CONTROLS (Visible only on mobile) */}
         <div className="mobile-controls">
@@ -220,7 +220,7 @@ const Products = () => {
                 <div
                   key={product._id}
                   className="product-fade-in"
-                  style={{animationDelay: `${index * 50}ms`}}
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <ProductCard product={product} />
                 </div>

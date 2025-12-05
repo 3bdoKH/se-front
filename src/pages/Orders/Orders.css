@@ -36,7 +36,7 @@
     padding: 4rem 0;
 }
 
-.container {
+.orders-container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 1.5rem;
@@ -185,29 +185,68 @@
     height: 8px;
     border-radius: 50%;
     display: inline-block;
-    box-shadow: 0 0 0 2px rgba(255,255,255,0.5);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
 }
 
 /* Status Colors */
-.status-delivered { background: var(--green-soft); color: var(--green-text); }
-.status-delivered .status-dot { background: var(--green-dot); }
+.status-delivered {
+    background: var(--green-soft);
+    color: var(--green-text);
+}
 
-.status-shipped { background: var(--blue-soft); color: var(--blue-text); }
-.status-shipped .status-dot { background: var(--blue-dot); }
+.status-delivered .status-dot {
+    background: var(--green-dot);
+}
 
-.status-processing { background: var(--blue-soft); color: var(--blue-text); }
-.status-processing .status-dot { background: var(--blue-dot); animation: pulse 2s infinite; }
+.status-shipped {
+    background: var(--blue-soft);
+    color: var(--blue-text);
+}
 
-.status-pending { background: var(--yellow-soft); color: var(--yellow-text); }
-.status-pending .status-dot { background: var(--yellow-dot); }
+.status-shipped .status-dot {
+    background: var(--blue-dot);
+}
 
-.status-cancelled { background: var(--red-soft); color: var(--red-text); }
-.status-cancelled .status-dot { background: var(--red-dot); }
+.status-processing {
+    background: var(--blue-soft);
+    color: var(--blue-text);
+}
+
+.status-processing .status-dot {
+    background: var(--blue-dot);
+    animation: pulse 2s infinite;
+}
+
+.status-pending {
+    background: var(--yellow-soft);
+    color: var(--yellow-text);
+}
+
+.status-pending .status-dot {
+    background: var(--yellow-dot);
+}
+
+.status-cancelled {
+    background: var(--red-soft);
+    color: var(--red-text);
+}
+
+.status-cancelled .status-dot {
+    background: var(--red-dot);
+}
 
 @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 /* --- Card Body --- */
@@ -276,7 +315,9 @@
     color: var(--text-medium);
 }
 
-.spec-dot { color: var(--text-light); }
+.spec-dot {
+    color: var(--text-light);
+}
 
 .item-price-premium {
     font-weight: 700;
@@ -349,7 +390,11 @@
     background: var(--red-soft);
 }
 
-.loader-center { display: flex; justify-content: center; padding: 4rem; }
+.loader-center {
+    display: flex;
+    justify-content: center;
+    padding: 4rem;
+}
 
 /* --- Responsive --- */
 @media (max-width: 768px) {
@@ -377,7 +422,11 @@
         align-items: stretch;
     }
 
-    .receipt-box { width: 100%; }
+    .receipt-box {
+        width: 100%;
+    }
 
-    .actions-wrapper { text-align: right; }
+    .actions-wrapper {
+        text-align: right;
+    }
 }

@@ -40,7 +40,7 @@ const Orders = () => {
   };
 
   const getStatusStyle = (status) => {
-    switch(status.toLowerCase()) {
+    switch (status.toLowerCase()) {
       case 'delivered': return 'status-delivered';
       case 'shipped': return 'status-shipped';
       case 'cancelled': return 'status-cancelled';
@@ -83,7 +83,7 @@ const Orders = () => {
 
   return (
     <div className="orders-page">
-      <div className="container">
+      <div className="orders-container">
 
         <div className="orders-header-section">
           <div>
@@ -149,8 +149,8 @@ const Orders = () => {
                   <div className="shipping-box">
                     <h5>Shipping Address</h5>
                     <p>
-                      {order.shippingAddress.street}<br/>
-                      {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}<br/>
+                      {order.shippingAddress.street}<br />
+                      {order.shippingAddress.city}, {order.shippingAddress.state} {order.shippingAddress.zipCode}<br />
                       {order.shippingAddress.country}
                     </p>
                   </div>

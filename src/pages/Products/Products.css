@@ -31,7 +31,7 @@
 }
 
 /* --- Layout --- */
-.container {
+.products-container {
     max-width: 1240px;
     margin: 0 auto;
     padding: 0 1.5rem;
@@ -74,7 +74,10 @@
     text-decoration: underline;
     padding: 0;
 }
-.clear-text-btn:hover { color: var(--brand-primary); }
+
+.clear-text-btn:hover {
+    color: var(--brand-primary);
+}
 
 .filter-section {
     margin-bottom: 2.5rem;
@@ -151,26 +154,31 @@
     color: var(--text-dark);
 }
 
-.range-dash { color: var(--text-light); }
+.range-dash {
+    color: var(--text-light);
+}
 
 
 /* --- Mobile Controls (Larger Design) --- */
 .mobile-controls {
-    display: none; /* Default hidden */
+    display: none;
+    /* Default hidden */
     gap: 1rem;
     margin-bottom: 1.5rem;
     position: sticky;
     top: 70px;
     z-index: 40;
     background: var(--bg-light);
-    padding: 1rem 0; /* Increased container padding */
+    padding: 1rem 0;
+    /* Increased container padding */
 }
 
 .mobile-filter-btn {
     flex: 1;
     background: var(--white);
     border: 1px solid var(--border-color);
-    padding: 0.9rem 1.2rem; /* Increased padding */
+    padding: 0.9rem 1.2rem;
+    /* Increased padding */
     border-radius: 12px;
     font-weight: 700;
     font-size: 1rem;
@@ -180,7 +188,7 @@
     justify-content: center;
     gap: 0.6rem;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     transition: all 0.2s;
 }
 
@@ -221,7 +229,7 @@
     font-weight: 600;
     color: var(--text-dark);
     appearance: none;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* The big button inside the filter drawer */
@@ -276,7 +284,13 @@
     transform: translateY(20px);
     animation: fadeInUp 0.6s ease forwards;
 }
-@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 /* Empty State */
 .no-products-minimal {
@@ -284,6 +298,7 @@
     padding: 4rem;
     color: var(--text-medium);
 }
+
 .reset-btn-link {
     background: none;
     border: 2px solid var(--brand-primary);
@@ -295,7 +310,11 @@
     cursor: pointer;
 }
 
-.loader-container { display: flex; justify-content: center; padding: 4rem; }
+.loader-container {
+    display: flex;
+    justify-content: center;
+    padding: 4rem;
+}
 
 
 /* --- MOBILE RESPONSIVENESS --- */
@@ -305,12 +324,14 @@
         padding-bottom: 2rem;
     }
 
-    .container {
-        padding: 0 1rem; /* Reduce container padding */
+    .products-container {
+        padding: 0 1rem;
+        /* Reduce container padding */
     }
 
     .products-layout {
-        display: block; /* Stack layout */
+        display: block;
+        /* Stack layout */
     }
 
     .products-hero {
@@ -318,24 +339,34 @@
         margin-bottom: 1.5rem;
     }
 
-    .products-hero .page-title { font-size: 2rem; }
-    .products-hero .page-subtitle { font-size: 0.95rem; }
+    .products-hero .page-title {
+        font-size: 2rem;
+    }
+
+    .products-hero .page-subtitle {
+        font-size: 0.95rem;
+    }
 
     /* 1. Hide Desktop Topbar */
-    .desktop-only { display: none; }
+    .desktop-only {
+        display: none;
+    }
 
     /* 2. Show Mobile Controls */
-    .mobile-controls { display: flex; }
+    .mobile-controls {
+        display: flex;
+    }
 
     /* 3. Hide Sidebar by default */
     .filters-sidebar-minimal {
         display: none;
         background: var(--white);
         padding: 1.5rem;
-        border-radius: 0 0 16px 16px; /* Rounded bottom only */
+        border-radius: 0 0 16px 16px;
+        /* Rounded bottom only */
         margin-bottom: 2rem;
         border-bottom: 1px solid var(--border-color);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
         /* Make it overlay slightly */
         position: relative;
         z-index: 10;
@@ -347,8 +378,15 @@
     }
 
     @keyframes slideDown {
-        from { opacity: 0; transform: translateY(-10px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     /* --- NEW MOBILE CARD DESIGN --- */
@@ -356,7 +394,8 @@
         /* Force 2 columns */
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px; /* Tighter gap for modern app feel */
+        gap: 12px;
+        /* Tighter gap for modern app feel */
     }
 
     /* Disable hover lift on mobile to prevent "sticky" hover states */
@@ -380,8 +419,10 @@
     .card-footer,
     .product-bottom {
         display: flex;
-        flex-direction: column; /* Stack vertically */
-        align-items: flex-start; /* Align Left */
+        flex-direction: column;
+        /* Stack vertically */
+        align-items: flex-start;
+        /* Align Left */
         gap: 0.8rem;
         margin-top: auto;
     }

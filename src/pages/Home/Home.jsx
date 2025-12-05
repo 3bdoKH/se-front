@@ -47,7 +47,7 @@ const Home = () => {
 
       {/* Features Section */}
       <section className="section-padding features-section">
-        <div className="container">
+        <div className="home-container">
           <div className="features-grid">
             <div className="feature-box animate-fade">
               <div className="icon-wrapper">
@@ -91,7 +91,7 @@ const Home = () => {
 
       {/* Categories Section */}
       <section className="section-padding categories-section">
-        <div className="container">
+        <div className="home-container">
           <div className="section-header text-center">
             <span className="section-tagline">Collections</span>
             <h2>Shop by Category</h2>
@@ -99,7 +99,7 @@ const Home = () => {
 
           <div className="categories-modern-grid">
             <Link to="/products?category=6932d55ad003bd8ca5bc7c7a&sort=newest" className="cat-card large-card">
-              <div className="cat-img" style={{backgroundImage: "url('https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=800')"}}></div>
+              <div className="cat-img" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=800')" }}></div>
               <div className="cat-glass-panel">
                 <div className="panel-content">
                   <h3>Men's Collection</h3>
@@ -109,7 +109,7 @@ const Home = () => {
             </Link>
 
             <Link to="/products?category=6932d55ad003bd8ca5bc7c7b&sort=newest" className="cat-card large-card">
-              <div className="cat-img" style={{backgroundImage: "url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800')"}}></div>
+              <div className="cat-img" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800')" }}></div>
               <div className="cat-glass-panel">
                 <div className="panel-content">
                   <h3>Women's Collection</h3>
@@ -119,7 +119,7 @@ const Home = () => {
             </Link>
 
             <Link to="/products?category=6932d55ad003bd8ca5bc7c7c&sort=newest" className="cat-card">
-              <div className="cat-img" style={{backgroundImage: "url('https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=800')"}}></div>
+              <div className="cat-img" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=800')" }}></div>
               <div className="cat-glass-panel">
                 <div className="panel-content">
                   <h3>Accessories</h3>
@@ -129,7 +129,7 @@ const Home = () => {
             </Link>
 
             <Link to="/products?category=6932d55ad003bd8ca5bc7c7d&sort=newest" className="cat-card">
-              <div className="cat-img" style={{backgroundImage: "url('https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800')"}}></div>
+              <div className="cat-img" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800')" }}></div>
               <div className="cat-glass-panel">
                 <div className="panel-content">
                   <h3>Footwear</h3>
@@ -143,7 +143,7 @@ const Home = () => {
 
       {/* Featured Products Section (UPDATED) */}
       <section className="section-padding featured-section">
-        <div className="container">
+        <div className="home-container">
           <div className="section-header flex-header">
             <div>
               <span className="section-tagline">Trending Now</span>
@@ -171,7 +171,7 @@ const Home = () => {
 
       {/* Newsletter Section */}
       <section className="newsletter-float-section">
-        <div className="container">
+        <div className="home-container">
           <div className="newsletter-card-clean">
             <div className="newsletter-text">
               <h2>Unlock 15% Off Your First Order</h2>
