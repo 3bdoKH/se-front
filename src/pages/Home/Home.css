@@ -504,3 +504,170 @@
     .pill-input::placeholder { color: var(--text-light); }
     .pill-btn { width: 100%; }
 }
+
+/* ============================
+   💥 FIX MOBILE RESPONSIVE 💥
+   ============================ */
+@media (max-width: 480px) {
+
+    /* GENERAL */
+    .section-padding {
+        padding: 3.5rem 0 !important;
+    }
+
+    .container {
+        padding: 0 1rem !important;
+    }
+
+    /* HERO SECTION */
+    .hero-section {
+        padding: 6rem 0 4rem !important;
+    }
+
+    .hero-title {
+        font-size: 2rem !important;
+        line-height: 1.2 !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .hero-subtitle {
+        font-size: 0.8rem !important;
+        padding: 0.4rem 1rem !important;
+    }
+
+    .hero-description {
+        font-size: 0.95rem !important;
+        margin-bottom: 2rem !important;
+        padding: 0 1rem;
+    }
+
+    .btn {
+        font-size: 0.95rem !important;
+        padding: 0.9rem 1.6rem !important;
+    }
+
+    /* FEATURES */
+    .features-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+
+    .feature-box {
+        padding: 1.8rem 1.2rem !important;
+    }
+
+    /* CATEGORIES */
+    .categories-modern-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+
+    .cat-card,
+    .cat-card.large-card {
+        height: 260px !important;
+    }
+
+    .panel-content h3 {
+        font-size: 1.3rem !important;
+    }
+
+    .panel-btn {
+        font-size: 0.75rem !important;
+    }
+
+    /* FEATURED PRODUCTS */
+    .products-grid {
+        grid-template-columns: 1fr !important;
+        gap: 2rem !important;
+    }
+
+    .featured-card-wrapper {
+        border-radius: 16px !important;
+    }
+
+    /* NEWSLETTER */
+    .newsletter-card-clean {
+        padding: 2rem !important;
+        border-radius: 20px !important;
+    }
+
+    .newsletter-text h2 {
+        font-size: 1.6rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .newsletter-text p {
+        font-size: 0.95rem !important;
+    }
+
+    .newsletter-form-pill {
+        gap: 0.5rem !important;
+    }
+
+    .pill-input {
+        padding: 0.8rem 1rem !important;
+        font-size: 0.9rem !important;
+    }
+
+    .pill-btn {
+        padding: 0.9rem 1rem !important;
+        font-size: 1rem !important;
+    }
+}
+
+
+/* ============================
+   📱 FIX NEWSLETTER ON MOBILE
+   ============================ */
+@media (max-width: 480px) {
+
+    .newsletter-float-section {
+        padding: 2rem 0 3rem !important;
+    }
+
+    .newsletter-card-clean {
+        padding: 2rem 1.5rem !important;
+        border-radius: 20px !important;
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 1.5rem !important;
+    }
+
+    .newsletter-text h2 {
+        font-size: 1.4rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .newsletter-text p {
+        font-size: 0.95rem !important;
+        line-height: 1.4 !important;
+        opacity: 0.9 !important;
+    }
+
+    /* FORM */
+    .newsletter-form-pill {
+        width: 100% !important;
+        padding: 0.8rem !important;
+        border-radius: 16px !important;
+        flex-direction: column !important;
+        gap: 0.8rem !important;
+        background: rgba(255,255,255,0.15) !important;
+    }
+
+    .pill-input {
+        width: 100%;
+        padding: 0.8rem 1rem !important;
+        font-size: 0.9rem !important;
+        border-radius: 12px !important;
+        background: rgba(255,255,255,0.9) !important;
+        color: #000 !important;
+    }
+
+    .pill-btn {
+        width: 100%;
+        padding: 0.9rem !important;
+        border-radius: 12px !important;
+        font-size: 1rem !important;
+    }
+}
