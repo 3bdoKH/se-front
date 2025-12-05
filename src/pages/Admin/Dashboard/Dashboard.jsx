@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { adminAPI } from '../../../services/api';
 import Loader from '../../../components/Loader/Loader';
 import './Dashboard.css';
-
+import { CircleDollarSign, Shirt, User, PackageSearch, Layers } from 'lucide-react';
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ const Dashboard = () => {
         <div className="stats-grid">
           <div className="stat-card">
             <div className="stat-icon" style={{ background: '#667eea' }}>
-              💰
+              <CircleDollarSign />
             </div>
             <div className="stat-info">
               <h3>${stats.overview.totalRevenue}</h3>
@@ -51,7 +51,7 @@ const Dashboard = () => {
 
           <div className="stat-card">
             <div className="stat-icon" style={{ background: '#28a745' }}>
-              📦
+              <PackageSearch />
             </div>
             <div className="stat-info">
               <h3>{stats.overview.totalOrders}</h3>
@@ -61,7 +61,7 @@ const Dashboard = () => {
 
           <div className="stat-card">
             <div className="stat-icon" style={{ background: '#ffc107' }}>
-              👥
+              <User />
             </div>
             <div className="stat-info">
               <h3>{stats.overview.totalUsers}</h3>
@@ -71,7 +71,7 @@ const Dashboard = () => {
 
           <div className="stat-card">
             <div className="stat-icon" style={{ background: '#17a2b8' }}>
-              👕
+              <Shirt />
             </div>
             <div className="stat-info">
               <h3>{stats.overview.totalProducts}</h3>
@@ -157,13 +157,16 @@ const Dashboard = () => {
           <h2>Quick Actions</h2>
           <div className="actions-grid">
             <Link to="/admin/products" className="action-btn">
-              📦 Manage Products
+              <Shirt /> Manage Products
+            </Link>
+            <Link to="/admin/categories" className="action-btn">
+              <Layers /> Manage Categories
             </Link>
             <Link to="/admin/orders" className="action-btn">
-              🛍️ Manage Orders
+              <PackageSearch /> Manage Orders
             </Link>
             <Link to="/admin/users" className="action-btn">
-              👥 Manage Users
+              <User /> Manage Users
             </Link>
           </div>
         </div>

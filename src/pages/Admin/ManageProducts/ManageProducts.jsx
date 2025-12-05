@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { productAPI, categoryAPI } from '../../../services/api';
 import Loader from '../../../components/Loader/Loader';
 import './ManageProducts.css';
-
+import { Star } from 'lucide-react';
 const ManageProducts = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -173,7 +173,7 @@ const ManageProducts = () => {
                                             {product.stock}
                                         </span>
                                     </td>
-                                    <td>{product.featured ? '⭐' : '-'}</td>
+                                    <td>{product.featured ? <Star color="#cddb00" /> : '-'}</td>
                                     <td>
                                         <div className="action-buttons">
                                             <button
