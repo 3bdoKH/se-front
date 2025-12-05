@@ -4,214 +4,252 @@ import { authAPI } from '../../services/api';
 import './Profile.css';
 
 const Profile = () => {
-    const { user } = useAuth();
-    const [activeTab, setActiveTab] = useState('profile');
-    const [profileData, setProfileData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-    });
-    const [passwordData, setPasswordData] = useState({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: '',
-    });
-    const [message, setMessage] = useState({ type: '', text: '' });
-    const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState('profile');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
 
-    useEffect(() => {
-        if (user) {
-            setProfileData({
-                name: user.name || '',
-                email: user.email || '',
-                phone: user.phone || '',
-            });
-        }
-    }, [user]);
+  const [profileData, setProfileData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+  });
 
-    const handleProfileChange = (e) => {
-        setProfileData({ ...profileData, [e.target.name]: e.target.value });
-    };
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
 
-    const handlePasswordChange = (e) => {
-        setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
-    };
+  useEffect(() => {
+    if (user) {
+      setProfileData({
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+      });
+    }
+  }, [user]);
 
-    const handleUpdateProfile = async (e) => {
-        e.preventDefault();
-        setMessage({ type: '', text: '' });
-        setLoading(true);
+  const handleProfileChange = (e) => {
+    setProfileData({ ...profileData, [e.target.name]: e.target.value });
+  };
 
-        try {
-            await authAPI.updateProfile(profileData);
-            setMessage({ type: 'success', text: 'Profile updated successfully!' });
-            setTimeout(() => window.location.reload(), 1500);
-        } catch (error) {
-            setMessage({
-                type: 'error',
-                text: error.response?.data?.message || 'Failed to update profile',
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
+  const handlePasswordChange = (e) => {
+    setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
+  };
 
-    const handleChangePassword = async (e) => {
-        e.preventDefault();
-        setMessage({ type: '', text: '' });
+  // Helper to get initials
+  const getInitials = (name) => {
+    return name
+      ? name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()
+      : 'U';
+  };
 
-        if (passwordData.newPassword !== passwordData.confirmPassword) {
-            setMessage({ type: 'error', text: 'Passwords do not match' });
-            return;
-        }
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    setMessage({ type: '', text: '' });
+    setLoading(true);
 
-        if (passwordData.newPassword.length < 6) {
-            setMessage({ type: 'error', text: 'Password must be at least 6 characters' });
-            return;
-        }
+    try {
+      await authAPI.updateProfile(profileData);
+      setMessage({ type: 'success', text: 'Profile updated successfully!' });
+      // Optional: Reload to refresh context if needed, or update context directly
+      setTimeout(() => window.location.reload(), 1500);
+    } catch (error) {
+      setMessage({
+        type: 'error',
+        text: error.response?.data?.message || 'Failed to update profile',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        setLoading(true);
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    setMessage({ type: '', text: '' });
 
-        try {
-            await authAPI.changePassword({
-                currentPassword: passwordData.currentPassword,
-                newPassword: passwordData.newPassword,
-            });
-            setMessage({ type: 'success', text: 'Password changed successfully!' });
-            setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
-        } catch (error) {
-            setMessage({
-                type: 'error',
-                text: error.response?.data?.message || 'Failed to change password',
-            });
-        } finally {
-            setLoading(false);
-        }
-    };
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setMessage({ type: 'error', text: 'Passwords do not match' });
+      return;
+    }
 
-    return (
-        <div className="profile-page">
-            <div className="profile-container">
-                <h1>My Profile</h1>
+    if (passwordData.newPassword.length < 6) {
+      setMessage({ type: 'error', text: 'Password must be at least 6 characters' });
+      return;
+    }
 
-                <div className="tabs">
-                    <button
-                        className={`tab ${activeTab === 'profile' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('profile')}
-                    >
-                        Profile Information
-                    </button>
-                    <button
-                        className={`tab ${activeTab === 'password' ? 'active' : ''}`}
-                        onClick={() => setActiveTab('password')}
-                    >
-                        Change Password
-                    </button>
+    setLoading(true);
+
+    try {
+      await authAPI.changePassword({
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+      });
+      setMessage({ type: 'success', text: 'Password changed successfully!' });
+      setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+    } catch (error) {
+      setMessage({
+        type: 'error',
+        text: error.response?.data?.message || 'Failed to change password',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="profile-page">
+      <div className="profile-card">
+
+        {/* Visual Header */}
+        <div className="profile-header">
+          <div className="avatar-circle">
+            {getInitials(user?.name)}
+          </div>
+          <div className="header-info">
+            <h1>{user?.name || 'User'}</h1>
+            <span className="role-badge">{user?.role || 'Customer'} Account</span>
+          </div>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="profile-tabs">
+          <button
+            className={`tab-btn ${activeTab === 'profile' ? 'active' : ''}`}
+            onClick={() => setActiveTab('profile')}
+          >
+            <span className="tab-icon">👤</span> Personal Info
+          </button>
+          <button
+            className={`tab-btn ${activeTab === 'password' ? 'active' : ''}`}
+            onClick={() => setActiveTab('password')}
+          >
+            <span className="tab-icon">🔒</span> Security
+          </button>
+        </div>
+
+        {/* Notifications */}
+        {message.text && (
+          <div className={`status-banner ${message.type}`}>
+            {message.text}
+          </div>
+        )}
+
+        {/* Content Area */}
+        <div className="profile-content">
+          {activeTab === 'profile' ? (
+            <form onSubmit={handleUpdateProfile} className="modern-form">
+              <div className="form-grid">
+                <div className="input-group">
+                  <label htmlFor="name">Full Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={profileData.name}
+                    onChange={handleProfileChange}
+                    required
+                    className="styled-input"
+                  />
                 </div>
 
-                {message.text && (
-                    <div className={`message ${message.type}`}>{message.text}</div>
-                )}
+                <div className="input-group">
+                  <label htmlFor="email">Email Address</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={profileData.email}
+                    onChange={handleProfileChange}
+                    required
+                    className="styled-input"
+                  />
+                </div>
 
-                {activeTab === 'profile' ? (
-                    <form onSubmit={handleUpdateProfile} className="profile-form">
-                        <div className="form-group">
-                            <label htmlFor="name">Full Name</label>
-                            <input
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={profileData.name}
-                                onChange={handleProfileChange}
-                                required
-                            />
-                        </div>
+                <div className="input-group">
+                  <label htmlFor="phone">Phone Number</label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={profileData.phone}
+                    onChange={handleProfileChange}
+                    placeholder="+1 (555) 000-0000"
+                    className="styled-input"
+                  />
+                </div>
 
-                        <div className="form-group">
-                            <label htmlFor="email">Email</label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                value={profileData.email}
-                                onChange={handleProfileChange}
-                                required
-                            />
-                        </div>
+                <div className="input-group">
+                  <label>Role</label>
+                  <input
+                    type="text"
+                    value={user?.role?.toUpperCase() || 'USER'}
+                    disabled
+                    className="styled-input disabled"
+                  />
+                </div>
+              </div>
 
-                        <div className="form-group">
-                            <label htmlFor="phone">Phone Number</label>
-                            <input
-                                type="tel"
-                                id="phone"
-                                name="phone"
-                                value={profileData.phone}
-                                onChange={handleProfileChange}
-                                placeholder="Optional"
-                            />
-                        </div>
+              <button type="submit" className="save-btn" disabled={loading}>
+                {loading ? 'Saving Changes...' : 'Save Changes'}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleChangePassword} className="modern-form">
+              <div className="form-stack">
+                <div className="input-group">
+                  <label htmlFor="currentPassword">Current Password</label>
+                  <input
+                    type="password"
+                    id="currentPassword"
+                    name="currentPassword"
+                    value={passwordData.currentPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    className="styled-input"
+                  />
+                </div>
 
-                        <div className="form-group">
-                            <label>Account Role</label>
-                            <input
-                                type="text"
-                                value={user?.role || 'N/A'}
-                                disabled
-                                className="disabled-input"
-                            />
-                        </div>
+                <div className="input-group">
+                  <label htmlFor="newPassword">New Password</label>
+                  <input
+                    type="password"
+                    id="newPassword"
+                    name="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    className="styled-input"
+                    minLength="6"
+                  />
+                  <span className="hint">Minimum 6 characters</span>
+                </div>
 
-                        <button type="submit" className="update-btn" disabled={loading}>
-                            {loading ? 'Updating...' : 'Update Profile'}
-                        </button>
-                    </form>
-                ) : (
-                    <form onSubmit={handleChangePassword} className="profile-form">
-                        <div className="form-group">
-                            <label htmlFor="currentPassword">Current Password</label>
-                            <input
-                                type="password"
-                                id="currentPassword"
-                                name="currentPassword"
-                                value={passwordData.currentPassword}
-                                onChange={handlePasswordChange}
-                                required
-                            />
-                        </div>
+                <div className="input-group">
+                  <label htmlFor="confirmPassword">Confirm New Password</label>
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    className="styled-input"
+                  />
+                </div>
+              </div>
 
-                        <div className="form-group">
-                            <label htmlFor="newPassword">New Password</label>
-                            <input
-                                type="password"
-                                id="newPassword"
-                                name="newPassword"
-                                value={passwordData.newPassword}
-                                onChange={handlePasswordChange}
-                                required
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label htmlFor="confirmPassword">Confirm New Password</label>
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                value={passwordData.confirmPassword}
-                                onChange={handlePasswordChange}
-                                required
-                            />
-                        </div>
-
-                        <button type="submit" className="update-btn" disabled={loading}>
-                            {loading ? 'Changing...' : 'Change Password'}
-                        </button>
-                    </form>
-                )}
-            </div>
+              <button type="submit" className="save-btn" disabled={loading}>
+                {loading ? 'Updating...' : 'Update Password'}
+              </button>
+            </form>
+          )}
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Profile;
-

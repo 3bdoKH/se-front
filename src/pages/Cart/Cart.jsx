@@ -10,21 +10,42 @@ const Cart = () => {
   const { cart, loading, updateCartItem, removeFromCart } = useCart();
   const navigate = useNavigate();
 
+  // 1. Not Logged In State
   if (!user) {
     return (
       <div className="cart-page">
-        <div className="cart-empty">
-          <h2>Please login to view your cart</h2>
-          <Link to="/login" className="login-btn">
-            Go to Login
+        <div className="cart-empty-state">
+          <div className="empty-icon-container">
+            <span role="img" aria-label="lock">🔒</span>
+          </div>
+          <h2>Sign in to view your cart</h2>
+          <p>You need to be logged in to see items in your shopping bag.</p>
+          <Link to="/login" className="btn-primary glow">
+            Sign In Now
           </Link>
         </div>
       </div>
     );
   }
 
-  if (loading) {
-    return <Loader />;
+  if (loading) return <div className="loader-center"><Loader /></div>;
+
+  // 2. Empty Cart State
+  if (!cart || cart.items.length === 0) {
+    return (
+      <div className="cart-page">
+        <div className="cart-empty-state">
+          <div className="empty-icon-container">
+            <span role="img" aria-label="bag">🛍️</span>
+          </div>
+          <h2>Your bag is empty</h2>
+          <p>Looks like you haven't added anything yet.</p>
+          <Link to="/products" className="btn-primary glow">
+            Start Shopping
+          </Link>
+        </div>
+      </div>
+    );
   }
 
   const handleQuantityChange = async (itemId, newQuantity) => {
@@ -32,135 +53,133 @@ const Cart = () => {
     try {
       await updateCartItem(itemId, newQuantity);
     } catch (error) {
-      alert(error.response?.data?.message || 'Failed to update cart');
+      console.error(error);
     }
   };
 
   const handleRemoveItem = async (itemId) => {
-    if (window.confirm('Remove this item from cart?')) {
+    if (window.confirm('Remove this item from your cart?')) {
       try {
         await removeFromCart(itemId);
       } catch (error) {
-        alert(error.response?.data?.message || 'Failed to remove item');
+        console.error(error);
       }
     }
   };
 
-  if (!cart || cart.items.length === 0) {
-    return (
-      <div className="cart-page">
-        <div className="cart-empty">
-          <span className="empty-icon">🛒</span>
-          <h2>Your cart is empty</h2>
-          <p>Start adding items to your cart!</p>
-          <Link to="/products" className="shop-btn">
-            Continue Shopping
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  // Calculations
+  const shippingCost = cart.totalPrice > 100 ? 0 : 10;
+  const taxCost = cart.totalPrice * 0.15;
+  const finalTotal = cart.totalPrice + shippingCost + taxCost;
 
   return (
     <div className="cart-page">
-      <div className="cart-container">
-        <h1>Shopping Cart</h1>
-        <p className="cart-count">{cart.items.length} items in your cart</p>
+      <div className="container">
 
-        <div className="cart-content">
-          {/* Cart Items */}
-          <div className="cart-items">
+        <div className="cart-header">
+          <h1 className="page-title">Shopping Bag</h1>
+          <span className="item-count-badge">
+            {cart.items.length} items
+          </span>
+        </div>
+
+        <div className="cart-layout">
+          {/* LEFT: Cart Items List */}
+          <div className="cart-items-list">
             {cart.items.map((item) => (
-              <div key={item._id} className="cart-item">
-                <img
-                  src={item.product?.images?.[0] || 'https://via.placeholder.com/150'}
-                  alt={item.product?.name}
-                  className="item-image"
-                />
+              <div key={item._id} className="cart-item-card animate-up">
 
-                <div className="item-details">
-                  <h3>{item.product?.name}</h3>
-                  <p className="item-options">
-                    Size: <strong>{item.size}</strong> | Color:{' '}
-                    <strong>{item.color}</strong>
-                  </p>
-                  <p className="item-price">${item.price.toFixed(2)} each</p>
+                {/* Image */}
+                <div className="item-img-wrapper animate-shine">
+                  <img
+                    src={item.product?.images?.[0] || 'https://via.placeholder.com/150'}
+                    alt={item.product?.name}
+                  />
                 </div>
 
-                <div className="item-actions">
-                  <div className="quantity-control">
+                {/* Details */}
+                <div className="item-info">
+                  <div className="info-top">
+                    <div className="name-and-variants">
+                      <Link to={`/products/${item.product._id}`} className="item-name">
+                        {item.product?.name}
+                      </Link>
+                      <div className="item-variants-text">
+                        {item.size && <span>Size: {item.size}</span>}
+                        {item.color && <span>Color: {item.color}</span>}
+                      </div>
+                    </div>
                     <button
-                      onClick={() => handleQuantityChange(item._id, item.quantity - 1)}
-                      disabled={item.quantity <= 1}
+                      className="btn-remove"
+                      onClick={() => handleRemoveItem(item._id)}
                     >
-                      -
-                    </button>
-                    <span>{item.quantity}</span>
-                    <button
-                      onClick={() => handleQuantityChange(item._id, item.quantity + 1)}
-                      disabled={item.quantity >= item.product?.stock}
-                    >
-                      +
+                      Remove
                     </button>
                   </div>
 
-                  <div className="item-total">
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </div>
+                  <div className="item-bottom">
+                    <div className="qty-selector-pill">
+                      <button
+                        onClick={() => handleQuantityChange(item._id, item.quantity - 1)}
+                        disabled={item.quantity <= 1}
+                      >−</button>
+                      <span className="qty-display">{item.quantity}</span>
+                      <button
+                        onClick={() => handleQuantityChange(item._id, item.quantity + 1)}
+                        disabled={item.quantity >= item.product?.stock}
+                      >+</button>
+                    </div>
 
-                  <button
-                    className="remove-btn"
-                    onClick={() => handleRemoveItem(item._id)}
-                  >
-                    🗑️
-                  </button>
+                    <div className="price-block">
+                      <span className="unit-price">${item.price.toFixed(2)}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Cart Summary */}
-          <div className="cart-summary">
-            <h2>Order Summary</h2>
+          {/* RIGHT: Order Summary */}
+          <div className="cart-sidebar">
+            <div className="summary-card">
+              <h3>Order Summary</h3>
 
-            <div className="summary-row">
-              <span>Subtotal</span>
-              <span>${cart.totalPrice.toFixed(2)}</span>
+              <div className="summary-line">
+                <span className="label-with-icon">📦 Subtotal</span>
+                <span>${cart.totalPrice.toFixed(2)}</span>
+              </div>
+
+              <div className="summary-line">
+                <span className="label-with-icon">🚚 Shipping</span>
+                <span>{shippingCost === 0 ? <span className="text-brand">Free</span> : `$${shippingCost.toFixed(2)}`}</span>
+              </div>
+
+              <div className="summary-line">
+                <span className="label-with-icon">📄 Tax (15%)</span>
+                <span>${taxCost.toFixed(2)}</span>
+              </div>
+
+              <div className="divider"></div>
+
+              <div className="summary-line total">
+                <span>Estimated Total</span>
+                <span className="total-amount">${finalTotal.toFixed(2)}</span>
+              </div>
+
+              <button
+                className="btn-checkout glow"
+                onClick={() => navigate('/checkout')}
+              >
+                Proceed to Checkout
+              </button>
+
+              <div className="secure-badge">
+                <span role="img" aria-label="shield">🛡️</span> Secure SSL Encryption
+              </div>
             </div>
 
-            <div className="summary-row">
-              <span>Shipping</span>
-              <span>{cart.totalPrice > 100 ? 'FREE' : '$10.00'}</span>
-            </div>
-
-            <div className="summary-row">
-              <span>Tax (15%)</span>
-              <span>${(cart.totalPrice * 0.15).toFixed(2)}</span>
-            </div>
-
-            <div className="summary-divider"></div>
-
-            <div className="summary-row total">
-              <span>Total</span>
-              <span>
-                $
-                {(
-                  cart.totalPrice +
-                  (cart.totalPrice > 100 ? 0 : 10) +
-                  cart.totalPrice * 0.15
-                ).toFixed(2)}
-              </span>
-            </div>
-
-            <button
-              className="checkout-btn"
-              onClick={() => navigate('/checkout')}
-            >
-              Proceed to Checkout
-            </button>
-
-            <Link to="/products" className="continue-shopping">
-              ← Continue Shopping
+            <Link to="/products" className="continue-link">
+              Continue Shopping
             </Link>
           </div>
         </div>
@@ -170,4 +189,3 @@ const Cart = () => {
 };
 
 export default Cart;
-

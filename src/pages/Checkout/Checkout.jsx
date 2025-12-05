@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { orderAPI } from '../../services/api';
 import './Checkout.css';
@@ -9,13 +9,14 @@ const Checkout = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
   const [formData, setFormData] = useState({
     street: '',
     city: '',
     state: '',
     zipCode: '',
     country: '',
-    paymentMethod: 'Cash on Delivery',
+    paymentMethod: 'Credit Card', // Default
   });
 
   const handleChange = (e) => {
@@ -23,6 +24,11 @@ const Checkout = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
+  };
+
+  // Custom handler for the visual payment cards
+  const selectPaymentMethod = (method) => {
+    setFormData({ ...formData, paymentMethod: method });
   };
 
   const handleSubmit = async (e) => {
@@ -42,8 +48,8 @@ const Checkout = () => {
         paymentMethod: formData.paymentMethod,
       };
 
-      const { data } = await orderAPI.create(orderData);
-      alert('Order placed successfully!');
+      await orderAPI.create(orderData);
+      // alert('Order placed successfully!'); // Optional: replaced by navigation
       navigate('/orders');
     } catch (error) {
       setError(error.response?.data?.message || 'Failed to place order');
@@ -55,16 +61,20 @@ const Checkout = () => {
   if (!cart || cart.items.length === 0) {
     return (
       <div className="checkout-page">
-        <div className="checkout-empty">
+        <div className="checkout-empty-state">
+          <div className="empty-icon-container">
+            <span role="img" aria-label="bag">🛍️</span>
+          </div>
           <h2>Your cart is empty</h2>
-          <button onClick={() => navigate('/products')} className="shop-btn">
+          <Link to="/products" className="btn-shop">
             Continue Shopping
-          </button>
+          </Link>
         </div>
       </div>
     );
   }
 
+  // Calculations
   const subtotal = cart.totalPrice;
   const shipping = subtotal > 100 ? 0 : 10;
   const tax = subtotal * 0.15;
@@ -72,151 +82,192 @@ const Checkout = () => {
 
   return (
     <div className="checkout-page">
-      <div className="checkout-container">
-        <h1>Checkout</h1>
+      <div className="container">
 
-        <div className="checkout-content">
-          {/* Checkout Form */}
-          <div className="checkout-form-section">
-            <h2>Shipping Information</h2>
+        <div className="checkout-header">
+          <h1 className="page-title">Checkout</h1>
+          <div className="secure-badge-header">
+            🔒 Secure SSL Connection
+          </div>
+        </div>
 
-            {error && <div className="error-message">{error}</div>}
+        <div className="checkout-layout">
+          {/* LEFT COLUMN: FORM */}
+          <div className="form-section">
 
-            <form onSubmit={handleSubmit} className="checkout-form">
-              <div className="form-group">
-                <label htmlFor="street">Street Address</label>
-                <input
-                  type="text"
-                  id="street"
-                  name="street"
-                  value={formData.street}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
+            {error && <div className="error-banner">{error}</div>}
 
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="city">City</label>
-                  <input
-                    type="text"
-                    id="city"
-                    name="city"
-                    value={formData.city}
-                    onChange={handleChange}
-                    required
-                  />
+            <form onSubmit={handleSubmit} id="checkout-form">
+
+              {/* Shipping Details */}
+              <div className="form-card">
+                <div className="card-header">
+                  <span className="step-icon">1</span>
+                  <h3>Shipping Details</h3>
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="state">State</label>
-                  <input
-                    type="text"
-                    id="state"
-                    name="state"
-                    value={formData.state}
-                    onChange={handleChange}
-                    required
-                  />
+                <div className="form-grid">
+                  <div className="form-group full-width">
+                    <label>Street Address</label>
+                    <input
+                      type="text"
+                      name="street"
+                      value={formData.street}
+                      onChange={handleChange}
+                      placeholder="123 Main St, Apt 4B"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>City</label>
+                    <input
+                      type="text"
+                      name="city"
+                      value={formData.city}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>State / Province</label>
+                    <input
+                      type="text"
+                      name="state"
+                      value={formData.state}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>ZIP / Postal Code</label>
+                    <input
+                      type="text"
+                      name="zipCode"
+                      value={formData.zipCode}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label>Country</label>
+                    <input
+                      type="text"
+                      name="country"
+                      value={formData.country}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="zipCode">ZIP Code</label>
-                  <input
-                    type="text"
-                    id="zipCode"
-                    name="zipCode"
-                    value={formData.zipCode}
-                    onChange={handleChange}
-                    required
-                  />
+              {/* Payment Method */}
+              <div className="form-card">
+                <div className="card-header">
+                  <span className="step-icon">2</span>
+                  <h3>Payment Method</h3>
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="country">Country</label>
-                  <input
-                    type="text"
-                    id="country"
-                    name="country"
-                    value={formData.country}
-                    onChange={handleChange}
-                    required
-                  />
+                <div className="payment-grid">
+                  <div
+                    className={`payment-option ${formData.paymentMethod === 'Credit Card' ? 'active' : ''}`}
+                    onClick={() => selectPaymentMethod('Credit Card')}
+                  >
+                    <span className="radio-circle"></span>
+                    <span className="pay-icon">💳</span>
+                    <span>Credit Card</span>
+                  </div>
+
+                  <div
+                    className={`payment-option ${formData.paymentMethod === 'PayPal' ? 'active' : ''}`}
+                    onClick={() => selectPaymentMethod('PayPal')}
+                  >
+                    <span className="radio-circle"></span>
+                    <span className="pay-icon">🅿️</span>
+                    <span>PayPal</span>
+                  </div>
+
+                  <div
+                    className={`payment-option ${formData.paymentMethod === 'Cash on Delivery' ? 'active' : ''}`}
+                    onClick={() => selectPaymentMethod('Cash on Delivery')}
+                  >
+                    <span className="radio-circle"></span>
+                    <span className="pay-icon">💵</span>
+                    <span>Cash on Delivery</span>
+                  </div>
                 </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="paymentMethod">Payment Method</label>
-                <select
-                  id="paymentMethod"
-                  name="paymentMethod"
-                  value={formData.paymentMethod}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="Cash on Delivery">Cash on Delivery</option>
-                  <option value="Credit Card">Credit Card</option>
-                  <option value="Debit Card">Debit Card</option>
-                  <option value="PayPal">PayPal</option>
-                </select>
-              </div>
-
-              <button type="submit" className="place-order-btn" disabled={loading}>
-                {loading ? 'Placing Order...' : 'Place Order'}
-              </button>
             </form>
           </div>
 
-          {/* Order Summary */}
-          <div className="order-summary">
-            <h2>Order Summary</h2>
+          {/* RIGHT COLUMN: SUMMARY */}
+          <div className="summary-section">
+            <div className="summary-card">
+              <h3>Order Summary</h3>
 
-            <div className="summary-items">
-              {cart.items.map((item) => (
-                <div key={item._id} className="summary-item">
-                  <img
-                    src={item.product?.images?.[0]}
-                    alt={item.product?.name}
-                  />
-                  <div className="item-info">
-                    <h4>{item.product?.name}</h4>
-                    <p>
-                      {item.size} | {item.color} | Qty: {item.quantity}
-                    </p>
+              <div className="summary-products">
+                {cart.items.map((item) => (
+                  <div key={item._id} className="mini-item">
+                    <div className="mini-img-wrapper">
+                      <img
+                        src={item.product?.images?.[0]}
+                        alt={item.product?.name}
+                      />
+                      <span className="mini-qty">{item.quantity}</span>
+                    </div>
+                    <div className="mini-info">
+                      <h4>{item.product?.name}</h4>
+                      <p>{item.size} / {item.color}</p>
+                    </div>
+                    <span className="mini-price">
+                      ${(item.price * item.quantity).toFixed(2)}
+                    </span>
                   </div>
-                  <span className="item-price">
-                    ${(item.price * item.quantity).toFixed(2)}
-                  </span>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            <div className="summary-divider"></div>
+              <div className="divider"></div>
 
-            <div className="summary-row">
-              <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
-            </div>
+              <div className="summary-row">
+                <span>Subtotal</span>
+                <span>${subtotal.toFixed(2)}</span>
+              </div>
+              <div className="summary-row">
+                <span>Shipping</span>
+                <span>{shipping === 0 ? <span className="free-text">Free</span> : `$${shipping.toFixed(2)}`}</span>
+              </div>
+              <div className="summary-row">
+                <span>Tax (15%)</span>
+                <span>${tax.toFixed(2)}</span>
+              </div>
 
-            <div className="summary-row">
-              <span>Shipping</span>
-              <span>{shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`}</span>
-            </div>
+              <div className="divider"></div>
 
-            <div className="summary-row">
-              <span>Tax (15%)</span>
-              <span>${tax.toFixed(2)}</span>
-            </div>
+              <div className="summary-row total">
+                <span>Total</span>
+                <span className="total-price">${total.toFixed(2)}</span>
+              </div>
 
-            <div className="summary-divider"></div>
+              <button
+                type="submit"
+                form="checkout-form" // Links button to the form
+                className="btn-place-order"
+                disabled={loading}
+              >
+                {loading ? 'Processing...' : `Pay $${total.toFixed(2)}`}
+              </button>
 
-            <div className="summary-row total">
-              <span>Total</span>
-              <span>${total.toFixed(2)}</span>
+              <p className="terms-text">
+                By placing this order, you agree to our Terms of Service and Privacy Policy.
+              </p>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -224,4 +275,3 @@ const Checkout = () => {
 };
 
 export default Checkout;
-
