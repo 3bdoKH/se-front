@@ -50,32 +50,40 @@ const Home = () => {
         <div className="container">
           <div className="features-grid">
             <div className="feature-box animate-fade">
-              <div className="icon-container">
-                <span role="img" aria-label="shipping">🚚</span>
+              <div className="icon-wrapper">
+                <span className="feature-icon">🚚</span>
               </div>
-              <h3>Fast Delivery</h3>
-              <p>Free global shipping on orders over $100.</p>
+              <div className="feature-info">
+                <h3>Fast Delivery</h3>
+                <p>Free global shipping on orders over $100.</p>
+              </div>
             </div>
             <div className="feature-box animate-fade delay-1">
-              <div className="icon-container">
-                <span role="img" aria-label="secure">🛡️</span>
+              <div className="icon-wrapper">
+                <span className="feature-icon">🛡️</span>
               </div>
-              <h3>Secure Checkout</h3>
-              <p>256-bit SSL encryption for safe payments.</p>
+              <div className="feature-info">
+                <h3>Secure Checkout</h3>
+                <p>256-bit SSL encryption for safe payments.</p>
+              </div>
             </div>
             <div className="feature-box animate-fade delay-2">
-              <div className="icon-container">
-                <span role="img" aria-label="returns">↩️</span>
+              <div className="icon-wrapper">
+                <span className="feature-icon">↩️</span>
               </div>
-              <h3>Easy Returns</h3>
-              <p>Risk-free 30-day exchange policy.</p>
+              <div className="feature-info">
+                <h3>Easy Returns</h3>
+                <p>Risk-free 30-day exchange policy.</p>
+              </div>
             </div>
             <div className="feature-box animate-fade delay-3">
-              <div className="icon-container">
-                <span role="img" aria-label="quality">✨</span>
+              <div className="icon-wrapper">
+                <span className="feature-icon">✨</span>
               </div>
-              <h3>Finest Quality</h3>
-              <p>Handpicked materials and craftsmanship.</p>
+              <div className="feature-info">
+                <h3>Finest Quality</h3>
+                <p>Handpicked materials and craftsmanship.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -90,58 +98,42 @@ const Home = () => {
           </div>
 
           <div className="categories-modern-grid">
-            {/* Card 1 - Men (Large) */}
-            <Link
-              to="/products?category=6932d55ad003bd8ca5bc7c7a&sort=newest"
-              className="cat-card large-card"
-            >
+            <Link to="/products?category=6932d55ad003bd8ca5bc7c7a&sort=newest" className="cat-card large-card">
               <div className="cat-img" style={{backgroundImage: "url('https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?w=800')"}}></div>
-              <div className="cat-overlay">
-                <div className="cat-content">
-                  <h3>Men's</h3>
-                  <span className="shop-link">Explore <i className="arrow">→</i></span>
+              <div className="cat-glass-panel">
+                <div className="panel-content">
+                  <h3>Men's Collection</h3>
+                  <span className="panel-btn">Explore Now</span>
                 </div>
               </div>
             </Link>
 
-            {/* Card 2 - Women (Large) */}
-            <Link
-              to="/products?category=6932d55ad003bd8ca5bc7c7b&sort=newest"
-              className="cat-card large-card"
-            >
+            <Link to="/products?category=6932d55ad003bd8ca5bc7c7b&sort=newest" className="cat-card large-card">
               <div className="cat-img" style={{backgroundImage: "url('https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800')"}}></div>
-              <div className="cat-overlay">
-                <div className="cat-content">
-                  <h3>Women's</h3>
-                  <span className="shop-link">Explore <i className="arrow">→</i></span>
+              <div className="cat-glass-panel">
+                <div className="panel-content">
+                  <h3>Women's Collection</h3>
+                  <span className="panel-btn">Explore Now</span>
                 </div>
               </div>
             </Link>
 
-            {/* Card 3 - Accessories (Standard) */}
-            <Link
-              to="/products?category=6932d55ad003bd8ca5bc7c7c&sort=newest"
-              className="cat-card"
-            >
+            <Link to="/products?category=6932d55ad003bd8ca5bc7c7c&sort=newest" className="cat-card">
               <div className="cat-img" style={{backgroundImage: "url('https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?w=800')"}}></div>
-              <div className="cat-overlay">
-                <div className="cat-content">
+              <div className="cat-glass-panel">
+                <div className="panel-content">
                   <h3>Accessories</h3>
-                  <span className="shop-link">Shop Now</span>
+                  <span className="panel-btn">Shop Now</span>
                 </div>
               </div>
             </Link>
 
-            {/* Card 4 - Footwear/Shoes (Standard) */}
-            <Link
-              to="/products?category=6932d55ad003bd8ca5bc7c7d&sort=newest"
-              className="cat-card"
-            >
+            <Link to="/products?category=6932d55ad003bd8ca5bc7c7d&sort=newest" className="cat-card">
               <div className="cat-img" style={{backgroundImage: "url('https://images.unsplash.com/photo-1549298916-b41d501d3772?w=800')"}}></div>
-              <div className="cat-overlay">
-                <div className="cat-content">
+              <div className="cat-glass-panel">
+                <div className="panel-content">
                   <h3>Footwear</h3>
-                  <span className="shop-link">Shop Now</span>
+                  <span className="panel-btn">Shop Now</span>
                 </div>
               </div>
             </Link>
@@ -149,15 +141,15 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Products Section */}
-      <section className="section-padding featured-section bg-gray">
+      {/* Featured Products Section (UPDATED) */}
+      <section className="section-padding featured-section">
         <div className="container">
           <div className="section-header flex-header">
             <div>
-              <span className="section-tagline">Weekly Selection</span>
-              <h2>Featured Products</h2>
+              <span className="section-tagline">Trending Now</span>
+              <h2>Weekly Selection</h2>
             </div>
-            <Link to="/products" className="view-all-btn">
+            <Link to="/products" className="view-all-outline-btn">
               View All Products
             </Link>
           </div>
@@ -167,7 +159,10 @@ const Home = () => {
           ) : (
             <div className="products-grid">
               {featuredProducts.map((product) => (
-                <ProductCard key={product._id} product={product} />
+                // Wrapped in a div to control hover effects from Home.css
+                <div key={product._id} className="featured-card-wrapper">
+                  <ProductCard product={product} />
+                </div>
               ))}
             </div>
           )}
