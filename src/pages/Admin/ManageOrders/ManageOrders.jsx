@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { orderAPI } from '../../../services/api';
 import Loader from '../../../components/Loader/Loader';
 import './ManageOrders.css';
+import { X } from 'lucide-react';
 
 const ManageOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -66,17 +67,45 @@ const ManageOrders = () => {
             <div className="manage-orders-container">
                 <div className="page-header">
                     <h1>Manage Orders</h1>
-                    <div className="filter-group">
-                        <label>Filter by Status:</label>
-                        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
-                            <option value="">All Orders</option>
-                            <option value="pending">Pending</option>
-                            <option value="processing">Processing</option>
-                            <option value="shipped">Shipped</option>
-                            <option value="delivered">Delivered</option>
-                            <option value="cancelled">Cancelled</option>
-                        </select>
-                    </div>
+                </div>
+
+                <div className="filter-navigation">
+                    <button
+                        className={`filter-btn ${filter === '' ? 'active' : ''}`}
+                        onClick={() => setFilter('')}
+                    >
+                        All Orders
+                    </button>
+                    <button
+                        className={`filter-btn ${filter === 'pending' ? 'active' : ''}`}
+                        onClick={() => setFilter('pending')}
+                    >
+                        Pending
+                    </button>
+                    <button
+                        className={`filter-btn ${filter === 'processing' ? 'active' : ''}`}
+                        onClick={() => setFilter('processing')}
+                    >
+                        Processing
+                    </button>
+                    <button
+                        className={`filter-btn ${filter === 'shipped' ? 'active' : ''}`}
+                        onClick={() => setFilter('shipped')}
+                    >
+                        Shipped
+                    </button>
+                    <button
+                        className={`filter-btn ${filter === 'delivered' ? 'active' : ''}`}
+                        onClick={() => setFilter('delivered')}
+                    >
+                        Delivered
+                    </button>
+                    <button
+                        className={`filter-btn ${filter === 'cancelled' ? 'active' : ''}`}
+                        onClick={() => setFilter('cancelled')}
+                    >
+                        Cancelled
+                    </button>
                 </div>
 
                 <div className="orders-stats">
@@ -148,7 +177,7 @@ const ManageOrders = () => {
                             <div className="modal-header">
                                 <h2>Order #{selectedOrder._id.substring(0, 8).toUpperCase()}</h2>
                                 <button className="close-btn" onClick={handleCloseModal}>
-                                    ×
+                                    <X />
                                 </button>
                             </div>
 

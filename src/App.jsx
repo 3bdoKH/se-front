@@ -23,6 +23,7 @@ import Dashboard from './pages/Admin/Dashboard/Dashboard';
 import ManageProducts from './pages/Admin/ManageProducts/ManageProducts';
 import ManageOrders from './pages/Admin/ManageOrders/ManageOrders';
 import ManageUsers from './pages/Admin/ManageUsers/ManageUsers';
+import ManageCategories from './pages/Admin/ManageCategories/ManageCategories';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -130,6 +131,14 @@ function App() {
                                     element={
                                         <AdminRoute>
                                             <ManageUsers />
+                                        </AdminRoute>
+                                    }
+                                />
+                                <Route
+                                    path="/admin/categories"
+                                    element={
+                                        <AdminRoute>
+                                            <ManageCategories />
                                         </AdminRoute>
                                     }
                                 />

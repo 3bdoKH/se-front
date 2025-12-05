@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { adminAPI } from '../../../services/api';
 import Loader from '../../../components/Loader/Loader';
 import './ManageUsers.css';
+
+
+
+
 
 const ManageUsers = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
     const [roleFilter, setRoleFilter] = useState('');
 
-    useEffect(() => {
-        loadUsers();
-    }, [searchTerm, roleFilter]);
-
-    const loadUsers = async () => {
+    const loadUsers = useCallback(async () => {
         try {
             setLoading(true);
             const params = {};
-            if (searchTerm) params.search = searchTerm;
+            if (searchQuery) params.search = searchQuery;
             if (roleFilter) params.role = roleFilter;
 
             const { data } = await adminAPI.getUsers(params);
@@ -26,6 +27,20 @@ const ManageUsers = () => {
             alert('Failed to load users');
         } finally {
             setLoading(false);
+        }
+    }, [searchQuery, roleFilter]);
+
+    useEffect(() => {
+        loadUsers();
+    }, [loadUsers]);
+
+    const handleSearch = () => {
+        setSearchQuery(searchTerm);
+    };
+
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
         }
     };
 
@@ -74,23 +89,40 @@ const ManageUsers = () => {
             <div className="manage-users-container">
                 <div className="page-header">
                     <h1>Manage Users</h1>
+
+                </div>
+
+                <div className="filter-navigation">
+                    <button
+                        className={`filter-btn ${roleFilter === '' ? 'active' : ''}`}
+                        onClick={() => setRoleFilter('')}
+                    >
+                        All Roles
+                    </button>
+                    <button
+                        className={`filter-btn ${roleFilter === 'customer' ? 'active' : ''}`}
+                        onClick={() => setRoleFilter('customer')}
+                    >
+                        Customers
+                    </button>
+                    <button
+                        className={`filter-btn ${roleFilter === 'admin' ? 'active' : ''}`}
+                        onClick={() => setRoleFilter('admin')}
+                    >
+                        Admins
+                    </button>
                     <div className="header-actions">
                         <input
                             type="text"
                             placeholder="Search by name or email..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
+                            onKeyPress={handleKeyPress}
                             className="search-input"
                         />
-                        <select
-                            value={roleFilter}
-                            onChange={(e) => setRoleFilter(e.target.value)}
-                            className="filter-select"
-                        >
-                            <option value="">All Roles</option>
-                            <option value="customer">Customers</option>
-                            <option value="admin">Admins</option>
-                        </select>
+                        <button onClick={handleSearch} className="search-btn">
+                            Search
+                        </button>
                     </div>
                 </div>
 
