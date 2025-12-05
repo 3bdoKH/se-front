@@ -9,9 +9,11 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Search removed from state
   const [filters, setFilters] = useState({
-    search: searchParams.get('search') || '',
     category: searchParams.get('category') || '',
     minPrice: searchParams.get('minPrice') || '',
     maxPrice: searchParams.get('maxPrice') || '',
@@ -39,7 +41,6 @@ const Products = () => {
     try {
       setLoading(true);
       const params = {};
-      if (filters.search) params.search = filters.search;
       if (filters.category) params.category = filters.category;
       if (filters.minPrice) params.minPrice = filters.minPrice;
       if (filters.maxPrice) params.maxPrice = filters.maxPrice;
@@ -57,8 +58,7 @@ const Products = () => {
   const handleFilterChange = (name, value) => {
     const newFilters = { ...filters, [name]: value };
     setFilters(newFilters);
-    
-    // Update URL params
+
     const params = {};
     Object.keys(newFilters).forEach((key) => {
       if (newFilters[key]) params[key] = newFilters[key];
@@ -68,7 +68,6 @@ const Products = () => {
 
   const clearFilters = () => {
     setFilters({
-      search: '',
       category: '',
       minPrice: '',
       maxPrice: '',
@@ -79,66 +78,26 @@ const Products = () => {
 
   return (
     <div className="products-page">
-      <div className="products-container">
-        {/* Filters Sidebar */}
-        <aside className="filters-sidebar">
-          <div className="filters-header">
-            <h2>Filters</h2>
-            <button onClick={clearFilters} className="clear-btn">
-              Clear All
-            </button>
-          </div>
+      {/* Hero Section */}
+      <div className="products-hero">
+        <div className="container">
+          <h1 className="page-title">The Collection</h1>
+          <p className="page-subtitle">Timeless essentials for everyday living.</p>
+        </div>
+      </div>
 
-          {/* Search */}
-          <div className="filter-group">
-            <label>Search</label>
-            <input
-              type="text"
-              value={filters.search}
-              onChange={(e) => handleFilterChange('search', e.target.value)}
-              placeholder="Search products..."
-            />
-          </div>
+      <div className="container products-layout">
 
-          {/* Category Filter */}
-          <div className="filter-group">
-            <label>Category</label>
-            <select
-              value={filters.category}
-              onChange={(e) => handleFilterChange('category', e.target.value)}
-            >
-              <option value="">All Categories</option>
-              {categories.map((cat) => (
-                <option key={cat._id} value={cat._id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
-          </div>
+        {/* MOBILE CONTROLS (Visible only on mobile) */}
+        <div className="mobile-controls">
+          <button
+            className={`mobile-filter-btn ${isMobileFilterOpen ? 'active' : ''}`}
+            onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
+          >
+            <span className="icon">⚡</span> Filters
+          </button>
 
-          {/* Price Filter */}
-          <div className="filter-group">
-            <label>Price Range</label>
-            <div className="price-inputs">
-              <input
-                type="number"
-                value={filters.minPrice}
-                onChange={(e) => handleFilterChange('minPrice', e.target.value)}
-                placeholder="Min"
-              />
-              <span>-</span>
-              <input
-                type="number"
-                value={filters.maxPrice}
-                onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
-                placeholder="Max"
-              />
-            </div>
-          </div>
-
-          {/* Sort */}
-          <div className="filter-group">
-            <label>Sort By</label>
+          <div className="mobile-sort">
             <select
               value={filters.sort}
               onChange={(e) => handleFilterChange('sort', e.target.value)}
@@ -146,31 +105,125 @@ const Products = () => {
               <option value="newest">Newest</option>
               <option value="price-asc">Price: Low to High</option>
               <option value="price-desc">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
+              <option value="rating">Top Rated</option>
             </select>
           </div>
+        </div>
+
+        {/* SIDEBAR FILTER */}
+        <aside className={`filters-sidebar-minimal ${isMobileFilterOpen ? 'mobile-open' : ''}`}>
+          <div className="sidebar-header">
+            <h3>Refine Selection</h3>
+            {(filters.category || filters.minPrice || filters.maxPrice) && (
+              <button onClick={clearFilters} className="clear-text-btn">
+                Clear All
+              </button>
+            )}
+          </div>
+
+          <div className="filter-section">
+            <h4 className="filter-title">Categories</h4>
+            <div className="category-list">
+              <button
+                className={`cat-item ${filters.category === '' ? 'active' : ''}`}
+                onClick={() => {
+                  handleFilterChange('category', '');
+                  setIsMobileFilterOpen(false);
+                }}
+              >
+                All Products
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat._id}
+                  className={`cat-item ${filters.category === cat._id ? 'active' : ''}`}
+                  onClick={() => {
+                    handleFilterChange('category', cat._id);
+                    setIsMobileFilterOpen(false);
+                  }}
+                >
+                  {cat.name}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="filter-section">
+            <h4 className="filter-title">Price Range</h4>
+            <div className="price-range-group">
+              <div className="price-input-box">
+                <span>$</span>
+                <input
+                  type="number"
+                  placeholder="Min"
+                  value={filters.minPrice}
+                  onChange={(e) => handleFilterChange('minPrice', e.target.value)}
+                />
+              </div>
+              <span className="range-dash">—</span>
+              <div className="price-input-box">
+                <span>$</span>
+                <input
+                  type="number"
+                  placeholder="Max"
+                  value={filters.maxPrice}
+                  onChange={(e) => handleFilterChange('maxPrice', e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Close button for mobile inside the drawer */}
+          <button
+            className="mobile-close-filters"
+            onClick={() => setIsMobileFilterOpen(false)}
+          >
+            Show {products.length} Results
+          </button>
         </aside>
 
-        {/* Products Grid */}
+        {/* MAIN CONTENT */}
         <div className="products-content">
-          <div className="products-header">
-            <h1>All Products</h1>
-            <p>{products.length} products found</p>
+          {/* Desktop Top Bar (Hidden on Mobile) */}
+          <div className="products-topbar desktop-only">
+            <span className="results-count">
+              Showing <strong>{products.length}</strong> results
+            </span>
+            <div className="sort-wrapper">
+              <span className="sort-label">Sort by:</span>
+              <select
+                value={filters.sort}
+                onChange={(e) => handleFilterChange('sort', e.target.value)}
+                className="sort-select"
+              >
+                <option value="newest">Newest</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="rating">Top Rated</option>
+              </select>
+            </div>
           </div>
 
           {loading ? (
-            <Loader />
+            <div className="loader-container"><Loader /></div>
           ) : products.length === 0 ? (
-            <div className="no-products">
-              <p>No products found matching your criteria.</p>
-              <button onClick={clearFilters} className="reset-btn">
+            <div className="no-products-minimal">
+              <h3>No products found</h3>
+              <p>Try changing your category or price range.</p>
+              <button onClick={clearFilters} className="reset-btn-link">
                 Reset Filters
               </button>
             </div>
           ) : (
             <div className="products-grid">
-              {products.map((product) => (
-                <ProductCard key={product._id} product={product} />
+              {products.map((product, index) => (
+                <div
+                  key={product._id}
+                  className="product-fade-in"
+                  style={{animationDelay: `${index * 50}ms`}}
+                >
+                  <ProductCard product={product} />
+                </div>
               ))}
             </div>
           )}
@@ -181,4 +234,3 @@ const Products = () => {
 };
 
 export default Products;
-
