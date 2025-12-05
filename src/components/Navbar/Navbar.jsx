@@ -21,67 +21,63 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="navbar">
-            <div className="navbar-container">
-                <Link to="/" className="navbar-logo">
-                    <span className="logo-icon">👕</span>
-                    Fashion Store
-                </Link>
+      <nav className="navbar">
+        <div className="navbar-container">
 
-                <button className="navbar-toggle" onClick={toggleMenu}>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+          {/* LEFT — BRAND */}
+          <Link to="/" className="navbar-logo">
+            <div className="logo-box">L</div>
+            <span className="brand-name">LUXE</span>
+          </Link>
 
-                <div className={`navbar-menu ${menuOpen ? 'active' : ''}`}>
-                    <Link to="/" className="navbar-link" onClick={() => setMenuOpen(false)}>
-                        Home
-                    </Link>
-                    <Link to="/products" className="navbar-link" onClick={() => setMenuOpen(false)}>
-                        Products
-                    </Link>
+          {/* MOBILE TOGGLE */}
+          <button
+            className={`navbar-toggle ${menuOpen ? "open" : ""}`}
+            onClick={toggleMenu}
+          >
+            <span></span><span></span><span></span>
+          </button>
 
-                    {user ? (
-                        <>
-                            <Link to="/cart" className="navbar-link cart-link" onClick={() => setMenuOpen(false)}>
-                                <span className="cart-icon">🛒</span>
-                                Cart
-                                {getCartCount() > 0 && (
-                                    <span className="cart-badge">{getCartCount()}</span>
-                                )}
-                            </Link>
-                            <Link to="/orders" className="navbar-link" onClick={() => setMenuOpen(false)}>
-                                My Orders
-                            </Link>
-                            <Link to="/profile" className="navbar-link" onClick={() => setMenuOpen(false)}>
-                                Profile
-                            </Link>
-                            {isAdmin() && (
-                                <Link to="/admin" className="navbar-link admin-link" onClick={() => setMenuOpen(false)}>
-                                    Admin Panel
-                                </Link>
-                            )}
-                            <div className="navbar-user">
-                                <span className="user-name">{user.name}</span>
-                                <button onClick={handleLogout} className="logout-btn">
-                                    Logout
-                                </button>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <Link to="/login" className="navbar-link" onClick={() => setMenuOpen(false)}>
-                                Login
-                            </Link>
-                            <Link to="/register" className="navbar-btn" onClick={() => setMenuOpen(false)}>
-                                Register
-                            </Link>
-                        </>
-                    )}
-                </div>
+          {/* RIGHT — MENU */}
+          <div className={`navbar-menu ${menuOpen ? "active" : ""}`}>
+
+            <div className="nav-section">
+              <Link to="/" className="navbar-link" onClick={() => setMenuOpen(false)}>Home</Link>
+              <Link to="/products" className="navbar-link" onClick={() => setMenuOpen(false)}>Collection</Link>
             </div>
-        </nav>
+
+            <div className="nav-section">
+              {user ? (
+                <>
+                  <Link to="/cart" className="navbar-link cart-link" onClick={() => setMenuOpen(false)}>
+                    <span className="cart-icon">🛒</span> Cart
+                    {getCartCount() > 0 && <span className="cart-badge">{getCartCount()}</span>}
+                  </Link>
+
+                  <Link to="/orders" className="navbar-link">Orders</Link>
+                  <Link to="/profile" className="navbar-link">Profile</Link>
+
+                  {isAdmin() && (
+                    <Link to="/admin" className="navbar-link admin-link">Admin</Link>
+                  )}
+
+                  <div className="navbar-user">
+                    <span className="user-name">{user.name}</span>
+                    <button onClick={handleLogout} className="logout-btn">Logout</button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="navbar-link">Login</Link>
+                  <Link to="/register" className="navbar-btn">Sign Up</Link>
+                </>
+              )}
+            </div>
+
+          </div>
+        </div>
+      </nav>
+
     );
 };
 
